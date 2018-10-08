@@ -10,9 +10,15 @@
 namespace hphio\cli;
 
 
+use League\Container\Container;
 use PHPUnit\Framework\TestCase;
 
 class LoggingConfiguratorTest extends TestCase
 {
+    private $container = null;
 
+    public function testAvailableCommands() {
+
+        $commands = new AvailableCommands();
+    }
 }
