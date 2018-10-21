@@ -7,6 +7,7 @@
  * @author Michael Munger <mj@hph.io>
  */
 
-include('vendor/autoload.php');
-include('autoload.php');
-include('config/containers.php');
+require('vendor/autoload.php');
+require('config/autoload.php');
+require('config/containers.php');
+require('config/autoload-testclasses.php');

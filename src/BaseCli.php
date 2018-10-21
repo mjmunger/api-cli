@@ -16,8 +16,9 @@ abstract class BaseCli implements CliInterface
 {
     protected $container = null;
 
-    public $grammar   = [];
-    public $commands  = [];
+    public $grammar         = [];
+    public $commands        = [];
+    public $directExecute   = [];
 
     public function __construct($container)
     {
@@ -27,6 +28,43 @@ abstract class BaseCli implements CliInterface
         $this->commands = $container->get(AvailableCommands::class);
         $this->loadCommands();
         $this->loadGrammar();
+
+        $shouldExit = $this->parseArgv();
+
+        //Do not exit during testing.
+        if($container->has('testmode')) return;
+
+        if($shouldExit) exit;
+    }
+
+    public function parseArgv() {
+        if($this->container->has('argv') == false) return false;
+
+        $args = $this->container->get('argv');
+
+        if(strcmp("-x", $args[1]) !== 0) return false;
+
+        $requiresAnotherArg = "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL;
+        if(isset($args[2]) === false) {
+            echo $requiresAnotherArg;
+            return true;
+        }
+
+        if(strlen($args[2]) === 0) {
+            echo $requiresAnotherArg;
+            return true;
+        }
+
+        $command = $args[2];
+        $commandCount = $this->runCommand($command);
+
+        if($commandCount === 0) {
+            echo "Command '$command' could not be found or run. Check your syntax and make sure it really exists. Run 'show help' for more information." . PHP_EOL;
+            return true;
+        }
+
+        return true;
+
     }
 
     public function showBanner()
@@ -86,7 +124,18 @@ abstract class BaseCli implements CliInterface
         return $seed;
     }
 
+    private function runCommand($line) {
+        $commandsRun = 0;
+        foreach($this->commands as $Command) {
+            if($Command->is($line) || $Command->hasAlias($line)){
+                $commandsRun++;
+                $Command->runCommand($this->container, $this->commands);
+            }
+        }
+        return $commandsRun;
+    }
     public function run() {
+
         $this->showBanner();
 
         $line = '';
@@ -96,14 +145,8 @@ abstract class BaseCli implements CliInterface
         while($line !== "quit" && $line !== 'exit') {
             $line = readline($this->getPrompt());
             $line = strtolower(trim($line));
-            $commandsRun = 0;
 
-            foreach($this->commands as $Command) {
-                if($Command->is($line) || $Command->hasAlias($line)){
-                    $commandsRun++;
-                    $Command->runCommand($this->container, $this->commands);
-                }
-            }
+            $commandsRun = $this->runCommand($line);
 
             if($commandsRun === 0) echo "Command not recognized.\n";
         }

@@ -1,18 +1,17 @@
 <?php
 /**
- * IMCv2 API Class autoloader
+ * Class autoloader
  *
  * @param string $class The fully-qualified class name.
  * @return void
  */
 spl_autoload_register(function ($class) {
 
-
     // project-specific namespace prefix
-    $prefix = 'hphio\\cli\\';
+    $prefix = 'hphio\\testing\\';
 
     // base directory for the namespace prefix
-    $base_dir = __DIR__ . '/src/';
+    $base_dir = dirname(__DIR__ ) . '/tests/unit/';
 
     // does the class use the namespace prefix?
     $len = strlen($prefix);
@@ -31,5 +30,7 @@ spl_autoload_register(function ($class) {
     // if the file exists, require it
     if (file_exists($file)) {
         require $file;
+    } else {
+//        printf("Could not load: $class\n");
     }
 });
