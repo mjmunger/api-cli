@@ -2,7 +2,7 @@
     "name": "hphio/api-cli",
     "description": "Implements a CLI back-end for managing web apps and APIs",
     "require": {
-        "league/container": "^3.2",
+        "league/container": ">=3.2",
       "ext-pdo": "*",
       "ext-readline": "*"
     },
