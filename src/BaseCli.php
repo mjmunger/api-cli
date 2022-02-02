@@ -10,21 +10,25 @@
 
 namespace hphio\cli;
 
+use League\CLImate\CLImate;
+use League\Container\Container;
+
 include('CliInterface.php');
 
 abstract class BaseCli implements CliInterface
 {
-    protected $container = null;
-
-    public $grammar         = [];
-    public $commands        = [];
-    public $directExecute   = [];
+    protected ?Container $container     = null;
+    protected ?CLImate $climate         = null;
+    public ?array $grammar              = [];
+    public ?AvailableCommands $commands = null;
+    public ?array $directExecute        = [];
 
     public function __construct($container)
     {
         if($this->isCLI() === false) die("The CLI must only be run via the terminal. No Apache for you!!!\n");
 
         $this->container = $container;
+        $this->climate = $container->get(CLImate::class);
         $this->commands = $container->get(AvailableCommands::class);
         $this->loadCommands();
         $this->loadGrammar();
@@ -69,16 +73,15 @@ abstract class BaseCli implements CliInterface
 
     public function showBanner()
     {
-        echo "HPHIO CLI starting up...\n\n";
+        $this->climate->out("HPHIO CLI starting up...");
     }
 
-    public function getPrompt() {
+    public function getPrompt(): string {
         return "HPHIO*CLI> ";
     }
 
     public function showGoodbye() {
-        echo "CLI shutting down.";
-        echo PHP_EOL;
+        $this->climate->out("CLI shutting down.");
     }
 
     public function isCLI() {
@@ -151,12 +154,11 @@ abstract class BaseCli implements CliInterface
             if($commandsRun === 0) echo "Command not recognized.\n";
         }
 
-        echo "\n";
-        echo "CLI shutting down...Good bye!\n";
+        $this->climate->out("CLI shutting down...Good bye!");
         exit;
     }
 
-    function traverse_tree($input, $index, $tree)
+    function traverse_tree($input, $index, $tree): array
     {
         //Initialize return values
         $return_values = [];

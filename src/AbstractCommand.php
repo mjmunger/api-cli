@@ -9,27 +9,39 @@
  */
 
 namespace hphio\cli;
+use League\CLImate\CLImate;
 use \League\Container\Container;
+use \PDO;
 
 include('CommandInterface.php');
 
 abstract class AbstractCommand implements CommandInterface
 {
-    protected $command = "foo";
-    protected $commandHelp = "bar baz";
-    protected $command_aliases = [];
+    protected ?Container $container = null;
+    protected ?CLImate $climate = null;
+    protected ?string $command = "foo";
+    protected ?string $commandHelp = "bar baz";
+    protected ?array $command_aliases = [];
+    protected ?PDO $db = null;
 
+    public function __construct(Container $container) {
+        $this->container = $container;
+        $this->climate = $container->get(CLImate::class);
+        $this->db = $container->get('db');
+    }
 
-    public function getCommand()
+    public function getCommand(): ?string
     {
         return $this->command;
     }
 
-    public function getHelp() {
+    public function getHelp(): ?string
+    {
         return $this->commandHelp;
     }
 
-    public function is($command) {
+    public function is($command): bool
+    {
         return ($command == $this->command);
     }
 
@@ -37,11 +49,13 @@ abstract class AbstractCommand implements CommandInterface
         $this->command_aliases[] = $alias;
     }
 
-    public function hasAlias($needle) {
+    public function hasAlias($needle): bool
+    {
         return in_array($needle, $this->command_aliases);
     }
 
-    public function getAliases() {
+    public function getAliases(): ?array
+    {
         return $this->command_aliases;
     }
 

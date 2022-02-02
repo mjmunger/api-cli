@@ -15,8 +15,8 @@ use League\Container\Container;
 class NoOp extends AbstractCommand
 {
 
-    protected $command = "noop";
-    protected $commandHelp = "NoOp command echos back your arguments for testing.";
+    protected ?string $command = "noop";
+    protected ?string $commandHelp = "NoOp command echos back your arguments for testing.";
 
     public function runCommand(Container $container, AvailableCommands $commands)
     {

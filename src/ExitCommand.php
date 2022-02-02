@@ -13,12 +13,13 @@ use \League\Container\Container;
 
 class ExitCommand extends AbstractCommand
 {
-    protected $command = "exit";
-    protected $commandHelp = "Exits the CLI";
+    protected ?string $command = "exit";
+    protected ?string $commandHelp = "Exits the CLI";
 
-    public function __construct($db)
+    public function __construct(Container $container)
     {
-        $this->db = $db;
+        $this->container = $container;
+        $this->db = $this->container->get('db');
         $this->addAlias('quit');
     }
 

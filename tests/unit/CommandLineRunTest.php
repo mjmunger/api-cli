@@ -11,22 +11,25 @@ namespace hphio\cli;
 
 
 use hphio\testing\TestCli;
+use League\CLImate\CLImate;
 use League\Container\Container;
 use PDO;
 use PHPUnit\Framework\TestCase;
 
 class CommandLineRunTest extends TestCase
 {
-    private function getContainer() {
+    private function getContainer(): Container
+    {
         $pdo = $this->createMock(PDO::class);
 
         $container = new Container();
+        $container->add(CLImate::class);
         $container->add('testmode',"foo");
-        $container->add('pdo', $pdo);
-        $container->add(NoOp::class);
+        $container->add('db', $pdo);
+        $container->add(NoOp::class)->addArgument($container);
         $container->add(TestCli::class)->addArgument($container);
         $container->add(AvailableCommands::class);
-        $container->add(ShowHelp::class)->addArgument($pdo);
+        $container->add(ShowHelp::class)->addArgument($container);
         return $container;
 
     }

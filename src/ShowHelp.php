@@ -13,13 +13,8 @@ use \League\Container\Container;
 
 class ShowHelp extends AbstractCommand
 {
-    protected $command = "show help";
-    protected $commandHelp = "Shows all available commands";
-
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
+    protected ?string $command = "show help";
+    protected ?string $commandHelp = "Shows all available commands";
 
     public function runCommand(Container $container, AvailableCommands $commands)
     {

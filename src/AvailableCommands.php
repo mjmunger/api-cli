@@ -50,7 +50,7 @@ class AvailableCommands implements Iterator, Countable
     }
 
     public function add(AbstractCommand $Invoker) {
-        array_push($this->invokerArray, $Invoker);
+        $this->invokerArray[] = $Invoker;
     }
 
     public function count() {
