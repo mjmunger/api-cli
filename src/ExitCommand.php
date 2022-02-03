@@ -16,10 +16,7 @@ class ExitCommand extends AbstractCommand
     protected ?string $command = "exit";
     protected ?string $commandHelp = "Exits the CLI";
 
-    public function __construct(Container $container)
-    {
-        $this->container = $container;
-        $this->db = $this->container->get('db');
+    public function setAliases() {
         $this->addAlias('quit');
     }
 

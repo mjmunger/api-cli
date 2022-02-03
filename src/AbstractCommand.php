@@ -28,6 +28,11 @@ abstract class AbstractCommand implements CommandInterface
         $this->container = $container;
         $this->climate = $container->get(CLImate::class);
         $this->db = $container->get('db');
+        $this->setAliases();
+    }
+
+    public function setAliases() {
+        //$this->addAlias('quit');
     }
 
     public function getCommand(): ?string
