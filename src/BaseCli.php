@@ -151,7 +151,7 @@ abstract class BaseCli implements CliInterface
 
             $commandsRun = $this->runCommand($line);
 
-            if($commandsRun === 0) echo "Command not recognized.\n";
+            if($commandsRun === 0) $this->climate->out( "Command not recognized.");
         }
 
         $this->climate->out("CLI shutting down...Good bye!");

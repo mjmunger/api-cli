@@ -16,6 +16,12 @@ class ShowHelp extends AbstractCommand
     protected ?string $command = "show help";
     protected ?string $commandHelp = "Shows all available commands";
 
+    /**
+     * @param \League\Container\Container $container
+     * @param \hphio\cli\AvailableCommands $commands
+     * @return void
+     * @todo Update this to use tables in CLImate.
+     */
     public function runCommand(Container $container, AvailableCommands $commands)
     {
         foreach($commands as $command) {

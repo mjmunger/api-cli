@@ -24,8 +24,7 @@ class ExitCommand extends AbstractCommand
     }
 
     public function showGoodbye() {
-        echo "CLI shutting down.";
-        echo PHP_EOL;
+        $this->climate->out("CLI shutting down.");
     }
 
     public function runCommand(Container $container, AvailableCommands $commands)
