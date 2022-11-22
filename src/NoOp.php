@@ -20,6 +20,6 @@ class NoOp extends AbstractCommand
 
     public function runCommand(Container $container, AvailableCommands $commands)
     {
-        $this->climate->out("NoOp command runs!");
+        echo "NoOp command runs!" . PHP_EOL;
     }
 }
