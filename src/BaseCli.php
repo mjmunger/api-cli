@@ -45,7 +45,7 @@ abstract class BaseCli implements CliInterface
         if($this->container->has('argv') == false) return false;
 
         $args = $this->container->get('argv');
-
+        if(count($args) == 1) return false;
         if(strcmp("-x", $args[1]) !== 0) return false;
 
         $requiresAnotherArg = "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL;
