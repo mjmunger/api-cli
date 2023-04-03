@@ -14,5 +14,11 @@ use \League\Container\Container;
 interface CommandInterface
 {
     public function runCommand(Container $container, AvailableCommands $commands);
-    public function is($command);
+    public function setAliases();
+    public function getCommand(): ?string;
+    public function getHelp(): ?string;
+    public function is($command): bool;
+    public function addAlias($alias);
+    public function hasAlias($needle): bool;
+    public function getAliases(): ?array;
 }
