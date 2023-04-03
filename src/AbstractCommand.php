@@ -15,7 +15,7 @@ use \PDO;
 
 include('CommandInterface.php');
 
-abstract class AbstractCommand implements CommandInterface
+abstract class AbstractCommand
 {
     protected ?Container $container = null;
     protected ?CLImate $climate = null;
