@@ -5,3 +5,8 @@ build/logs/coverage/*
 coverage.xml
 phpunit
 /composer.phar
+.phpunit.cache/*
+.phpunit.result.cache
+composer.lock
+phpunit.xml.bak
+
