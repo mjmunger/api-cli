@@ -25,27 +25,29 @@ class AvailableCommands implements Iterator, Countable
         $this->rewind();
     }
 
-    public function rewind() {
+    public function rewind() : void {
         $this->position = 0;
     }
 
-    public function current() {
+    public function current(): mixed {
         return $this->invokerArray[$this->position];
     }
 
-    public function key() {
+    public function key(): mixed
+    {
         return $this->position;
     }
 
-    public function next() {
+    public function next(): void {
         $this->position++;
     }
 
-    public function previous() {
+    public function previous(): void {
         $this->position--;
     }
 
-    public function valid() {
+    public function valid(): bool
+    {
         return isset($this->invokerArray[$this->position]);
     }
 
@@ -53,7 +55,8 @@ class AvailableCommands implements Iterator, Countable
         $this->invokerArray[] = $Invoker;
     }
 
-    public function count() {
+    public function count(): int
+    {
         return count($this->invokerArray);
     }
 

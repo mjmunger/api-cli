@@ -11,7 +11,7 @@
 namespace hphio\cli;
 use \League\Container\Container;
 
-class ShowHelp extends AbstractCommand
+class ShowHelp extends AbstractCommand implements CommandInterface
 {
     protected ?string $command = "show help";
     protected ?string $commandHelp = "Shows all available commands";
@@ -59,5 +59,10 @@ class ShowHelp extends AbstractCommand
             echo PHP_EOL;
         }
         echo PHP_EOL;
+    }
+
+    public function setAliases()
+    {
+        // TODO: Implement setAliases() method.
     }
 }
