@@ -5,7 +5,7 @@
  * Date: 9/17/18
  * Time: 4:33 PM
  * @author Michael Munger <mj@hph.io>
- * @copyright (c) 2017-2018 High Powered Help, Inc. All rights reserved.
+ * @copyright (c) 2017-2023 High Powered Help, Inc. All rights reserved.
  */
 
 namespace hphio\cli;
@@ -29,10 +29,6 @@ abstract class AbstractCommand
         $this->climate = $container->get(CLImate::class);
         $this->db = $container->get('db');
         $this->setAliases();
-    }
-
-    public function setAliases() {
-        //$this->addAlias('quit');
     }
 
     public function getCommand(): ?string

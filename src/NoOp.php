@@ -12,7 +12,7 @@ namespace hphio\cli;
 
 use League\Container\Container;
 
-class NoOp extends AbstractCommand
+class NoOp extends AbstractCommand implements CommandInterface
 {
 
     protected ?string $command = "noop";
@@ -21,5 +21,10 @@ class NoOp extends AbstractCommand
     public function runCommand(Container $container, AvailableCommands $commands)
     {
         echo "NoOp command runs!" . PHP_EOL;
+    }
+
+    public function setAliases()
+    {
+        // TODO: Implement setAliases() method.
     }
 }

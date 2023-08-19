@@ -4,6 +4,7 @@
  *
  * Date: 10/21/18
  * Time: 1:18 PM
+ *
  * @author Michael Munger <mj@hph.io>
  */
 
@@ -24,7 +25,7 @@ class CommandLineRunTest extends TestCase
 
         $container = new Container();
         $container->add(CLImate::class);
-        $container->add('testmode',"foo");
+        $container->add('testmode', "foo");
         $container->add('db', $pdo);
         $container->add(NoOp::class)->addArgument($container);
         $container->add(TestCli::class)->addArgument($container);
@@ -37,9 +38,11 @@ class CommandLineRunTest extends TestCase
     /**
      * @param $args
      * @param $expectedOutput
+     *
      * @dataProvider providerArgs
      */
-    public function testCliExecute($args, $expectedOutput) {
+    public function testCliExecute($args, $expectedOutput)
+    {
         $container = $this->getContainer();
 
         $container->add('argv', $args);
@@ -49,11 +52,35 @@ class CommandLineRunTest extends TestCase
         $this->assertInstanceOf(TestCli::class, $cli);
     }
 
-    public function providerArgs() {
-        return  [ [ ['cli.php', '-x', 'noop'        ] , "NoOp command runs!" . PHP_EOL                                                                                                                      ]
-                , [ ['cli.php', '-x'                ] , "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL                         ]
-                , [ ['cli.php', '-x', ''            ] , "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL                         ]
-                , [ ['cli.php', '-x', 'nonexistent' ] , "Command 'nonexistent' could not be found or run. Check your syntax and make sure it really exists. Run 'show help' for more information." . PHP_EOL]
-                ];
+    public static function providerArgs(): array
+    {
+        return [
+            CommandLineRunTest::runNoOp(),
+            CommandLineRunTest::missingArg(),
+            CommandLineRunTest::emptyArg(),
+            CommandLineRunTest::nonExistentCommand(),
+        ];
     }
+
+    public static function runNoOp(): array
+    {
+        return [['cli.php', '-x', 'noop'], "NoOp command runs!" . PHP_EOL];
+    }
+
+    public static function missingArg(): array
+    {
+        return [['cli.php', '-x'], "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL];
+    }
+
+    public static function emptyArg(): array
+    {
+        return [['cli.php', '-x', ''], "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL];
+    }
+
+    public static function nonExistentCommand(): array
+    {
+        return [['cli.php', '-x', 'nonexistent'], "Command 'nonexistent' could not be found or run. Check your syntax and make sure it really exists. Run 'show help' for more information." . PHP_EOL];
+    }
+
+
 }
