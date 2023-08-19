@@ -64,5 +64,13 @@ abstract class AbstractCommand
         return $this->command_aliases;
     }
 
+    public function setCommandText($command) {
+        $this->command = $command;
+    }
+
+    public function setHelpText($help) {
+        $this->commandHelp = $help;
+    }
+
 
 }

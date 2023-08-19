@@ -21,4 +21,29 @@ interface CommandInterface
     public function addAlias($alias);
     public function hasAlias($needle): bool;
     public function getAliases(): ?array;
+
+    /**
+     * Sets the command used to invoke the command.
+     * Example:
+     * public function setCommand('users password reset') {
+     *     $this->setCommandText('users password reset');
+     * }
+     *
+     * @param $command
+     *
+     * @return void
+     */
+    public function setCommand($command): void;
+
+    /**
+     * Sets the help text for the command.
+     * Example:
+     * public function setCommand('users password reset') {
+     *     $this->setHelpText('Resets a user password.');
+     * }
+     * @param $help
+     *
+     * @return void
+     */
+    public function setHelp($help): void;
 }
