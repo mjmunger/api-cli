@@ -4,17 +4,18 @@
  *
  * Date: 9/17/18
  * Time: 4:39 PM
- * @author Michael Munger <mj@hph.io>
+ *
+ * @author        Michael Munger <mj@hph.io>
  * @copyright (c) 2017-2018 High Powered Help, Inc. All rights reserved.
  */
 
 namespace hphio\cli;
+
 use \League\Container\Container;
 
-class ExitCommand extends AbstractCommand
+class ExitCommand extends AbstractCommand implements CommandInterface
 {
-    protected ?string $command = "exit";
-    protected ?string $commandHelp = "Exits the CLI";
+
 
     public function setAliases(): void
     {
@@ -30,5 +31,15 @@ class ExitCommand extends AbstractCommand
     {
         $this->showGoodbye();
         exit;
+    }
+
+    public function setCommand(): void
+    {
+        $this->command = "exit";
+    }
+
+    public function setHelp(): void
+    {
+        $this->commandHelp = "Exits the CLI";
     }
 }

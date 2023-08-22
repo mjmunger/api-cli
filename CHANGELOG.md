@@ -1,5 +1,9 @@
 # Unreleased
 
+# v1.1.0
+## Changed
+- `setCommand()` and `setHelp()` are now executed in the container.
+
 # v1.0.0
 ## Changed
 - Accidentally pushed this branch and version as v2.x. Changed to v1.x.
