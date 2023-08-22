@@ -65,4 +65,14 @@ class ShowHelp extends AbstractCommand implements CommandInterface
     {
         // TODO: Implement setAliases() method.
     }
+
+    public function setCommand(): void
+    {
+        $this->command = "show help";
+    }
+
+    public function setHelp(): void
+    {
+        $this->commandHelp = "Shows all available commands";
+    }
 }

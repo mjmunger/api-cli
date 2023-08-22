@@ -25,25 +25,27 @@ interface CommandInterface
     /**
      * Sets the command used to invoke the command.
      * Example:
-     * public function setCommand('users password reset') {
-     *     $this->setCommandText('users password reset');
+     * public function setCommand(): void
+     * {
+     *     $this->command = "show help";
      * }
      *
      * @param $command
      *
      * @return void
      */
-    public function setCommand($command): void;
+    public function setCommand(): void;
 
     /**
      * Sets the help text for the command.
      * Example:
-     * public function setCommand('users password reset') {
-     *     $this->setHelpText('Resets a user password.');
+     * public function setHelp(): void
+     * {
+     *     $this->commandHelp = "Shows all available commands";
      * }
      * @param $help
      *
      * @return void
      */
-    public function setHelp($help): void;
+    public function setHelp(): void;
 }

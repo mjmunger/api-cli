@@ -7,7 +7,7 @@
  * @author Michael Munger <mj@hph.io>
  */
 
-namespace hphio\testing;
+namespace Tests\unit\hphio\testing;
 
 
 use hphio\cli\BaseCli;
@@ -17,7 +17,8 @@ use hphio\cli\ShowHelp;
 class TestCli extends BaseCli
 {
 
-    public function loadCommands() {
+    public function loadCommands(): void
+    {
         //Load available commands
         $this->commands->add($this->container->get(ShowHelp::class));
         $this->commands->add($this->container->get(NoOp::class));

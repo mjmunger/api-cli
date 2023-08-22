@@ -8,17 +8,16 @@
  * @author Michael Munger <mj@hph.io>
  */
 
-namespace hphio\cli;
+namespace Tests\unit;
 
-include("TestTreeStructureTrait.php");
-
+use hphio\cli\Tree;
 use PHPUnit\Framework\TestCase;
 
 class TreeTest extends TestCase
 {
     use TreeTestingTraits;
 
-    private static function secondaryNode()
+    private static function secondaryNode(): array
     {
         return ['user ', ['password', 'deactivate', 'activate']];
     }
@@ -30,7 +29,7 @@ class TreeTest extends TestCase
     }
 
     /**
-     * @covers       \hphio\cli\Tree::setTree()
+     * @covers \hphio\cli\Tree::setTree
      * @dataProvider providerTestSetTree
      */
     public function testSetTree($readline_input, $expected)
@@ -56,7 +55,6 @@ class TreeTest extends TestCase
     }
 
     /**
-     * @covers       \hphio\cli\Tree::processSingleToken
      * @dataProvider providerTestParseSingleToken
      */
     public function testParseSingleToken($token, $expected)
@@ -95,7 +93,7 @@ class TreeTest extends TestCase
         $this->assertSame($expected, $results);
     }
 
-    public static function providerTestGetTokensThatStartWith()
+    public static function providerTestGetTokensThatStartWith(): array
     {
         return [['u', ['user']]
             , ['us', ['user']]
@@ -122,7 +120,7 @@ class TreeTest extends TestCase
         $this->assertSame($expected, $results);
     }
 
-    public static function providerTestProcessMultipleTokens()
+    public static function providerTestProcessMultipleTokens(): array
     {
         return [
             ['user password', ['reset', 'invalidate']]

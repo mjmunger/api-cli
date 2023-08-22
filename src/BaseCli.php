@@ -4,28 +4,29 @@
  *
  * Date: 9/17/18
  * Time: 4:35 PM
- * @author Michael Munger <mj@hph.io>
+ *
+ * @author        Michael Munger <mj@hph.io>
  * @copyright (c) 2017-2018 High Powered Help, Inc. All rights reserved.
  */
 
 namespace hphio\cli;
 
+use Exception;
 use League\CLImate\CLImate;
 use League\Container\Container;
-
-include('CliInterface.php');
+use hphio\cli\CLIException;
 
 abstract class BaseCli implements CliInterface
 {
-    protected ?Container $container     = null;
-    protected ?CLImate $climate         = null;
-    public ?array $grammar              = [];
+    protected ?Container $container = null;
+    protected ?CLImate $climate = null;
+    public ?array $grammar = [];
     public ?AvailableCommands $commands = null;
-    public ?array $directExecute        = [];
+    public ?array $directExecute = [];
 
     public function __construct($container)
     {
-        if($this->isCLI() === false) die("The CLI must only be run via the terminal. No Apache for you!!!\n");
+        if ($this->isCLI() === false) die("The CLI must only be run via the terminal. No Apache for you!!!\n");
 
         $this->container = $container;
         $this->climate = $container->get(CLImate::class);
@@ -36,25 +37,26 @@ abstract class BaseCli implements CliInterface
         $shouldExit = $this->parseArgv();
 
         //Do not exit during testing.
-        if($container->has('testmode')) return;
+        if ($container->has('testmode')) return;
 
-        if($shouldExit) exit;
+        if ($shouldExit) exit;
     }
 
-    public function parseArgv() {
-        if($this->container->has('argv') == false) return false;
+    public function parseArgv()
+    {
+        if ($this->container->has('argv') == false) return false;
 
         $args = $this->container->get('argv');
-        if(count($args) == 1) return false;
-        if(strcmp("-x", $args[1]) !== 0) return false;
+        if (count($args) == 1) return false;
+        if (strcmp("-x", $args[1]) !== 0) return false;
 
         $requiresAnotherArg = "-x requires an additional argument, which is the command you want to run. Run 'show help' for more information." . PHP_EOL;
-        if(isset($args[2]) === false) {
+        if (isset($args[2]) === false) {
             echo $requiresAnotherArg;
             return true;
         }
 
-        if(strlen($args[2]) === 0) {
+        if (strlen($args[2]) === 0) {
             echo $requiresAnotherArg;
             return true;
         }
@@ -62,7 +64,7 @@ abstract class BaseCli implements CliInterface
         $command = $args[2];
         $commandCount = $this->runCommand($command);
 
-        if($commandCount === 0) {
+        if ($commandCount === 0) {
             echo "Command '$command' could not be found or run. Check your syntax and make sure it really exists. Run 'show help' for more information." . PHP_EOL;
             return true;
         }
@@ -76,38 +78,44 @@ abstract class BaseCli implements CliInterface
         $this->climate->out("HPHIO CLI starting up...");
     }
 
-    public function getPrompt(): string {
+    public function getPrompt(): string
+    {
         return "HPHIO*CLI> ";
     }
 
-    public function showGoodbye() {
+    public function showGoodbye(): void
+    {
         $this->climate->out("CLI shutting down.");
     }
 
-    public function isCLI() {
+    public function isCLI(): bool
+    {
         return (php_sapi_name() === 'cli');
     }
 
-    public function loadCommands() {
+    public function loadCommands(): void
+    {
 
         //Load available commands
         $this->commands->add($this->container->get(ShowHelp::class));
 
     }
 
-    protected function loadGrammar() {
+    protected function loadGrammar(): void
+    {
         $grammar = [];
 
-        foreach($this->commands as $command) {
+        foreach ($this->commands as $command) {
             $command = $command->getCommand();
             $thisGrammar = $this->onionize(explode(" ", $command));
-            $grammar = array_merge_recursive($grammar,$thisGrammar);
+            $grammar = array_merge_recursive($grammar, $thisGrammar);
         }
 
         $this->grammar = $grammar;
     }
 
-    public static function onionize($buffer) {
+    public static function onionize($buffer): array
+    {
 
         //pop off the last one to make the seed array.
         $value = null;
@@ -118,7 +126,7 @@ abstract class BaseCli implements CliInterface
 
         //Wrap the rest outward.
 
-        for($x = count($buffer) -1; $x >= 0; $x--) {
+        for ($x = count($buffer) - 1; $x >= 0; $x--) {
             $key = array_pop($buffer);
             $tmp = [$key => $seed];
             $seed = $tmp;
@@ -127,31 +135,43 @@ abstract class BaseCli implements CliInterface
         return $seed;
     }
 
-    private function runCommand($line) {
+    private function runCommand($line): int
+    {
         $commandsRun = 0;
-        foreach($this->commands as $Command) {
-            if($Command->is($line) || $Command->hasAlias($line)){
-                $commandsRun++;
+        foreach ($this->commands as $Command) {
+            if (!$Command->is($line) && !$Command->hasAlias($line)) continue;
+
+            $commandsRun++;
+
+            try {
                 $Command->runCommand($this->container, $this->commands);
+            } catch (CLIException $exception) {
+                $this->climate->yellow("CLI Error: " . $exception->getMessage());
+                $commandsRun--;
+            } catch (Exception $e) {
+                $this->climate->red("Unexpected Error: " . $e->getMessage());
+                $commandsRun--;
             }
         }
         return $commandsRun;
     }
-    public function run() {
+
+    public function run(): void
+    {
 
         $this->showBanner();
 
         $line = '';
 
-        readline_completion_function([$this,"traverse_tree"]);
+        readline_completion_function([$this, "traverse_tree"]);
 
-        while($line !== "quit" && $line !== 'exit') {
+        while ($line !== "quit" && $line !== 'exit') {
             $line = readline($this->getPrompt());
             $line = strtolower(trim($line));
 
             $commandsRun = $this->runCommand($line);
 
-            if($commandsRun === 0) $this->climate->out( "Command not recognized.");
+            if ($commandsRun === 0) $this->climate->out("Command not recognized.");
         }
 
         $this->climate->out("CLI shutting down...Good bye!");

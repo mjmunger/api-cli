@@ -6,21 +6,19 @@
  * Time: 3:01 PM
  * @author Michael Munger <mj@hph.io>
  */
-namespace hphio\cli;
+namespace Tests\unit;
 
 include("StandardContainerTrait.php");
 
+use hphio\cli\AbstractCommand;
+use hphio\cli\AvailableCommands;
+use hphio\cli\ShowHelp;
+use hphio\cli\StandardCli;
 use PHPUnit\Framework\TestCase;
 use League\Container\Container;
 
 //use \Exception;
 
-class mockPDO extends \PDO {
-    public function __construct()
-    {
-        //Do nothing.
-    }
-}
 
 class CLITest extends TestCase
 {
@@ -47,7 +45,7 @@ class CLITest extends TestCase
         $this->assertSame($commandStub2->getHelp(), $getHelp2);
 
         $container->add(AvailableCommands::class);
-        $container->add(SeedUUIDs::class, $commandStub1);
+//        $container->add(SeedUUIDs::class, $commandStub1);
         $container->add(ShowHelp::class , $commandStub2);
 
         $Cli = new StandardCli($container);

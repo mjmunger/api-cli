@@ -46,7 +46,8 @@ abstract class AbstractCommand
         return ($command == $this->command);
     }
 
-    public function addAlias($alias) {
+    public function addAlias($alias): void
+    {
         $this->command_aliases[] = $alias;
     }
 
@@ -59,14 +60,4 @@ abstract class AbstractCommand
     {
         return $this->command_aliases;
     }
-
-    public function setCommandText($command) {
-        $this->command = $command;
-    }
-
-    public function setHelpText($help) {
-        $this->commandHelp = $help;
-    }
-
-
 }

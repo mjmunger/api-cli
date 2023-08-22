@@ -18,8 +18,8 @@ use \Countable;
 
 class AvailableCommands implements Iterator, Countable
 {
-    private $position     = 0;
-    private $invokerArray = [];
+    private int $position       = 0;
+    private array $invokerArray = [];
 
     public function __construct() {
         $this->rewind();

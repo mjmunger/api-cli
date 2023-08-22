@@ -27,4 +27,14 @@ class NoOp extends AbstractCommand implements CommandInterface
     {
         // TODO: Implement setAliases() method.
     }
+
+    public function setCommand(): void
+    {
+        $this->command = "noop";
+    }
+
+    public function setHelp(): void
+    {
+        $this->commandHelp = "NoOp command echos back your arguments for testing.";
+    }
 }

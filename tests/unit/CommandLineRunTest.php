@@ -8,10 +8,13 @@
  * @author Michael Munger <mj@hph.io>
  */
 
-namespace hphio\cli;
+namespace Tests\unit;
 
 
-use hphio\testing\TestCli;
+use hphio\cli\AvailableCommands;
+use hphio\cli\NoOp;
+use hphio\cli\ShowHelp;
+use Tests\unit\hphio\testing\TestCli;
 use League\CLImate\CLImate;
 use League\Container\Container;
 use PDO;

@@ -16,15 +16,17 @@ class ExitCommand extends AbstractCommand
     protected ?string $command = "exit";
     protected ?string $commandHelp = "Exits the CLI";
 
-    public function setAliases() {
+    public function setAliases(): void
+    {
         $this->addAlias('quit');
     }
 
-    public function showGoodbye() {
+    public function showGoodbye(): void
+    {
         $this->climate->out("CLI shutting down.");
     }
 
-    public function runCommand(Container $container, AvailableCommands $commands)
+    public function runCommand(Container $container, AvailableCommands $commands): void
     {
         $this->showGoodbye();
         exit;

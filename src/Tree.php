@@ -20,11 +20,13 @@ class Tree
         //Can't set the tree here because it's done at run-time.
     }
 
-    public function setTree($tree) {
+    public function setTree($tree): void
+    {
         $this->tree = $tree;
     }
 
-    public function getTokensThatStartWith($prefix, $tree) {
+    public function getTokensThatStartWith($prefix, $tree): false|array
+    {
         $keys = array_keys($tree);
         $buffer = [];
 
@@ -37,7 +39,8 @@ class Tree
 
     }
 
-    public function getSubNode($token, $tree) {
+    public function getSubNode($token, $tree): array
+    {
 
         if(is_array($tree[$token]) === false) return [ $tree[$token] ];
 
@@ -47,7 +50,8 @@ class Tree
         return array_keys($subNode);
     }
 
-    public function processSingleToken($token) {
+    public function processSingleToken($token): array
+    {
 
         //Try for a partial match
         $token = trim($token);
@@ -72,11 +76,13 @@ class Tree
 
     }
 
-    private function padReturn($array) {
+    private function padReturn($array): string
+    {
         return " $array ";
     }
 
-    public function processMultipleTokens($tokens) {
+    public function processMultipleTokens($tokens): array
+    {
 
         $tree = $this->tree;
         $tokens = explode(" ", $tokens);
@@ -104,7 +110,8 @@ class Tree
         return $return;
     }
 
-    public function getChoices($readline_input) {
+    public function getChoices($readline_input): array
+    {
 
         $readline_input = trim($readline_input);
 

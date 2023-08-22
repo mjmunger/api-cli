@@ -1,5 +1,9 @@
 <?php
-namespace hphio\cli;
+namespace Tests\unit;
+use hphio\cli\AbstractCommand;
+use hphio\cli\AvailableCommands;
+use hphio\cli\ShowHelp;
+use League\CLImate\CLImate;
 use League\Container\Container;
 /**
  * Trait that creates a standard testing container for the CLI
@@ -10,9 +14,16 @@ use League\Container\Container;
  */
 
 trait StandardTestContainerTrait {
-    public function getStandardTestContainer() {
+    public function getStandardTestContainer(): Container
+    {
         $container = new Container();
-        $container->add('db',new mockPDO());
+        $mockPDO = $this->getMockBuilder(\PDO::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $container->add(CLImate::class);
+
+        $container->add('db',$mockPDO);
 
         $commandStub1 = $this->createMock(AbstractCommand::class);
         $commandStub1->method('getCommand')->willReturn("Command 1");
@@ -23,7 +34,7 @@ trait StandardTestContainerTrait {
         $commandStub2->method('getHelp')->willReturn("Help for command 2");
 
         $container->add(AvailableCommands::class);
-        $container->add(SeedUUIDs::class, $commandStub1);
+//        $container->add(SeedUUIDs::class, $commandStub1);
         $container->add(ShowHelp::class , $commandStub2);
 
         return $container;
