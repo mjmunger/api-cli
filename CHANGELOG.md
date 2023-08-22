@@ -1,6 +1,8 @@
 # Unreleased
 
-# v2.0.0
+# v1.0.0
+## Changed
+- Accidentally pushed this branch and version as v2.x. Changed to v1.x.
 ## Added
 - Added setCommandText and setHelpText methods to AbstractCommand.
 
