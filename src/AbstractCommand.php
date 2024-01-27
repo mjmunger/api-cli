@@ -13,8 +13,6 @@ use League\CLImate\CLImate;
 use \League\Container\Container;
 use \PDO;
 
-include('CommandInterface.php');
-
 abstract class AbstractCommand
 {
     protected ?Container $container = null;
@@ -31,6 +29,8 @@ abstract class AbstractCommand
         $this->climate = $container->get(CLImate::class);
         $this->db = $container->get('db');
         $this->setAliases();
+        $this->setCommand();
+        $this->setHelp();
     }
 
     public function getCommand(): ?string
