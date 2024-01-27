@@ -24,6 +24,8 @@ abstract class AbstractCommand
     protected ?array $command_aliases = [];
     protected ?PDO $db = null;
 
+    protected bool $debug = false;
+
     public function __construct(Container $container) {
         $this->container = $container;
         $this->climate = $container->get(CLImate::class);
@@ -60,4 +62,20 @@ abstract class AbstractCommand
     {
         return $this->command_aliases;
     }
+
+    public function setDebug(bool $mode): void
+    {
+        $this->debug = $mode;
+    }
+
+    /**
+     * @param string $message
+     * @codeCoverageIgnore
+     */
+    public function log(string $message): void
+    {
+        if(!$this->debug) return;
+        $this->climate->info($message);
+    }
+
 }

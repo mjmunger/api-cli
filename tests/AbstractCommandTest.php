@@ -85,4 +85,17 @@ class AbstractCommandTest extends TestCase
 
         return [$container];
     }
+
+    public function testSetDebug()
+    {
+        $container = $this->getStandardTestContainer();
+        $command = new DummyCommand($container);
+
+        $reflectionClass = new \ReflectionClass($command);
+        $reflectionProperty = $reflectionClass->getProperty('debug');
+        $reflectionProperty->setAccessible(true);
+
+        $command->setDebug(true);
+        $this->assertTrue($reflectionProperty->getValue($command));
+    }
 }
